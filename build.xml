@@ -1,0 +1,27 @@
+<project name="e2j" default="dist" basedir=".">
+  <property name="src-dir" location="src" />
+  <property name="build-dir" location="build" />
+  <property name="art-dir" location="${basedir}" />
+
+  <target name="init">
+    <mkdir dir="${build-dir}" />
+  </target>
+
+  <target name="compile" depends="init">
+    <javac srcdir="${src-dir}" destdir="${build-dir}" includeantruntime="false" />
+  </target>
+
+  <target name="dist" depends="compile">
+    <mkdir dir="${art-dir}" />
+    <jar jarfile="${art-dir}/e2j-agent.jar" basedir="${build-dir}">
+      <manifest>
+        <attribute name="Premain-Class" value="veer.e2j.instrument.Entrypoint" />
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="clear">
+    <delete dir="${build-dir}" />
+    <delete dir="${art-dir}" />
+  </target>
+</project>
