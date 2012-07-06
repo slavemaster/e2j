@@ -58,9 +58,7 @@ public final class ClassCollector {
   }
 
   private void emit(JarOutputStream sink, ClassDefinition definition) throws IOException {
-    String filename = definition.name().replaceAll("[\\.$]", "/") + ".class";
-
-    sink.putNextEntry(new JarEntry(filename));
+    sink.putNextEntry(new JarEntry(definition.name() + ".class"));
     sink.write(definition.data());
     sink.closeEntry();
   }
