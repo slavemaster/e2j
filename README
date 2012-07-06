@@ -1,0 +1,24 @@
+e2j is an unpacker for jars packed via Jar2Exe hidden mode
+written by veer
+
+usage:
+  C:\dev\e2j>set old_opts=%JAVA_TOOL_OPTIONS%
+  C:\dev\e2j>set JAVA_TOOL_OPTIONS=-javaagent:e2j-agent.jar(=output-file)
+  C:\dev\e2j>packed-exe
+  ...
+  C:\dev\e2j>set JAVA_TOOL_OPTIONS=%old_opts%
+where:
+  output-file is optional and refers to the file where you want to
+    put the unpacked classes (it uses a jar)
+  packed-exe is the executable packed by Jar2Exe that you wish to extract
+  
+P.S. don't try to log-off or shut-down while this agent is running as the
+  shutdown hook might be a bit intensive. it was originally written so that
+  writing the jar wasn't offloaded until the very end but instead incrementally
+  but that proved to be too much of a hassle because of the subsequent
+  ClosedByInterruptExceptions being thrown by the I/O code. changing this meant
+  incurring more memory usage as all relevant class definitions are kept in
+  memory until the very end.
+P.S.S. all non-hidden-mode packed jars can be extracted readily as trailing data in
+  the executable. due to the nature of the pkzip format, this allows extracting the
+  contents of the class simply by treating the executable as a zip file.
